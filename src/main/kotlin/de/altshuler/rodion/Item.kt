@@ -16,20 +16,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.altshuler.rodion
 
-enum class Item(val fullName : String, val code: String, val packs : List<Pack>) {
+enum class Item(val code: String, val packs : List<Pack>) {
 
-    VS5(fullName = "Vegermite Scroll", code = "VS5", packs = listOf(
+    VS5(code = "VS5", packs = listOf(
         Pack(3, 6.99),
         Pack(5, 8.99)
     )
     ),
-    MB11(fullName = "Blueberry Muffin", code = "MB11", packs = listOf(
+    MB11(code = "MB11", packs = listOf(
         Pack(2, 9.95),
         Pack(5, 16.95),
         Pack(8, 24.95)
     )
     ),
-    CF(fullName = "Croissant", code = "CF", packs = listOf(
+    CF(code = "CF", packs = listOf(
         Pack(3, 5.95),
         Pack(5, 9.95),
         Pack(9, 16.99)
