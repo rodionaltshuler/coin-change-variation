@@ -14,39 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
-    id 'application'
-}
+package de.altshuler.rodion
 
-application {
-    mainClassName = "de.altshuler.rodion.MainKt"
-}
-
-group 'de.altshuler.rodion'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-test {
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-    }
+fun parseArguments(quantityString: String, code: String) : OrderParams {
+    val quantity = quantityString.toInt()
+    require(quantity > 0) { "Order quantity expected to be > 0"}
+    return OrderParams(itemByCode(code), quantity)
 }

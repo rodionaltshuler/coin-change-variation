@@ -16,33 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.altshuler.rodion
 
-import java.lang.Exception
 import java.util.*
-
-fun main(args: Array<String>?) {
-    val message: String = when (args?.size) {
-        2 -> {
-            try {
-                val orderArgs = parseArguments(args.get(0), args.get(1))
-                composeOrder(orderArgs).toString()
-            } catch (e: Exception) {
-                "Error processing order: ${e.message}"
-            }
-        }
-        else -> "Please provide exactly two arguments: quantity and item code (like '10 VS5', '14 MB11')"
-    }
-    println(message)
-}
-
-
-data class OrderParams(val item: Item, val quantity: Int)
-
-fun parseArguments(quantityString: String, code: String) : OrderParams {
-    val quantity = quantityString.toInt()
-    require(quantity > 0) { "Order quantity expected to be > 0"}
-    return OrderParams(itemByCode(code), quantity)
-}
-
 
 fun composeOrder(args : OrderParams) : Order {
 
@@ -54,7 +28,7 @@ fun composeOrder(args : OrderParams) : Order {
     // {Node} data structure is required to keep track of packs we used to get to solution
     data class Node(val parent : Node? = null, val remaining : Int, val value : Int, val availablePacks : Set<Int>)
 
-    val queue : Queue<Node> = PriorityQueue { x : Node, y : Node -> x.remaining - y.remaining }
+    val queue : Queue<Node> = PriorityQueue { x: Node, y: Node -> x.remaining - y.remaining }
 
     packs.forEach{
         //It's a variation of 'Coin change problem' https://www.algorithmist.com/index.php/Coin_Change, so on each step we're dividing
@@ -116,4 +90,3 @@ fun composeOrder(args : OrderParams) : Order {
     //solution doesn't exist
     return Order(item, 0, 0.0, Collections.emptyMap())
 }
-

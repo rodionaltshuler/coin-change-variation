@@ -14,39 +14,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
-    id 'application'
-}
+package de.altshuler.rodion
 
-application {
-    mainClassName = "de.altshuler.rodion.MainKt"
-}
+import java.lang.Exception
 
-group 'de.altshuler.rodion'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-test {
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
+fun main(args: Array<String>?) {
+    val message: String = when (args?.size) {
+        2 -> {
+            try {
+                val orderArgs = parseArguments(args.get(0), args.get(1))
+                composeOrder(orderArgs).toString()
+            } catch (e: Exception) {
+                "Error processing order: ${e.message}"
+            }
+        }
+        else -> "Please provide exactly two arguments: quantity and item code (like '10 VS5', '14 MB11')"
     }
+    println(message)
 }
+
+

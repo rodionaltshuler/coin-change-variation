@@ -19,20 +19,10 @@ package de.altshuler.rodion
 import org.junit.Test
 import java.lang.Exception
 
-class CompositionTest {
-
-    @Test(expected = Exception::class)
-    fun parseArguments_negativeQuantityNotAllowed() {
-        parseArguments("-1", Item.VS5.code)
-    }
-
-    @Test(expected = Exception::class)
-    fun parseArguments_zeroQuantityNotAllowed() {
-        parseArguments("0", Item.VS5.code)
-    }
+class composeOrderTest {
 
     @Test
-    fun composeOrder_QuantityInPacksMatchesOrderParams() {
+    fun `quantity in packs matches order params`() {
         val quantity = 5
         val orderParams = OrderParams(Item.VS5, quantity)
 
@@ -42,7 +32,7 @@ class CompositionTest {
     }
 
     @Test
-    fun composeOrder_totalQuantityMatchesExpected() {
+    fun `total quantity matches expected`() {
         val quantity = 5
         val orderParams = OrderParams(Item.VS5, quantity)
 
@@ -51,7 +41,7 @@ class CompositionTest {
     }
 
     @Test
-    fun composeOrder_returnEmptyOrderIfUnableToComposeLessThenSmallestPack() {
+    fun `return empty order if order quantity less then smallest pack`() {
         val minPack : Int = Item.CF.packs.map { it.count }.min()!!
         val quantity = minPack - 1
         require(minPack > 0)
@@ -63,7 +53,7 @@ class CompositionTest {
     }
 
     @Test
-    fun composeOrder_fullOfBiggestPacks() {
+    fun `order composed of biggest packs possible`() {
         val maxPack : Int = Item.CF.packs.map { it.count }.max()!!
         val expectedPacksCount = 100
         val quantity = maxPack * expectedPacksCount
@@ -76,7 +66,8 @@ class CompositionTest {
         assert(pack.value == expectedPacksCount) { "Expected packs count is ${expectedPacksCount}, actual ${pack.value}"}
     }
 
-    fun compose_bigOrderOfVariousPacks() {
+    @Test
+    fun `big order composed of various packs`() {
         val expectedPacks : Map<Pack, Int> = mapOf(Item.VS5.packs[0] to 2, Item.VS5.packs[1] to 100)
         val orderParams = OrderParams(Item.VS5, 2 * 3 + 5 * 100)
         val order = composeOrder(orderParams)
@@ -84,7 +75,7 @@ class CompositionTest {
     }
 
     @Test
-    fun composeOrder_16_fromPacks_3_and_5() {
+    fun `compose order quantity=16 using packs 3 and 5`() {
         val expectedPacks : Map<Pack, Int> = mapOf(Item.VS5.packs[0] to 2, Item.VS5.packs[1] to 2)
         val orderParams = OrderParams(Item.VS5, 16)
         val order = composeOrder(orderParams)
@@ -92,7 +83,7 @@ class CompositionTest {
     }
 
     @Test
-    fun composeOrder_4_impossibleFrom_3_5_9() {
+    fun `composing order quantity=4 is impossible from 3,5,9`() {
         val orderParams = OrderParams(Item.CF, 4)
         val order = composeOrder(orderParams)
         assert(order.isEmpty()) { "Order of quantity 4 is unable to compose from packs [3, 5, 9] - empty order expected"}
