@@ -14,39 +14,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
-    id 'application'
-}
+package de.altshuler.rodion
 
-application {
-    mainClassName = "de.altshuler.rodion.CompositionKt"
-}
+import java.util.*
 
-group 'de.altshuler.rodion'
-version '1.0-SNAPSHOT'
+data class Order(val item : Item, val totalQuantity : Int, val totalAmount : Double, val packs : Map<Pack, Int> = Collections.emptyMap()) {
 
-sourceCompatibility = 1.8
+    fun isEmpty() = totalQuantity == 0 && totalAmount == 0.0 && packs.isEmpty()
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-test {
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-    }
+    override fun toString() = "${totalQuantity} ${item.code} $${totalAmount} \n " +
+            packs.map { "      ${it.value} x ${it.key.count} $${it.key.price}"}.joinToString (separator = "\n")
 }
